@@ -5,7 +5,7 @@ import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 // import * as d3 from "d3";
 import Konva from "konva";
-import { Stage, Layer, Rect, Text, Circle, Line } from "react-konva";
+import { Stage, Layer, Rect, Text, Circle, Line, Node } from "react-konva";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -49,46 +49,60 @@ export default function Test() {
 
   const [nodes, setNodes] = useState([
     {
-      linked: ["n2", "n3", "n5"],
       id: "n1",
+      linked: ["n2", "n5"],
+      groups: ["L1"],
       x: 100,
       y: 100,
       r: 10,
       opacity: 0.5
     },
     {
-      linked: ["n1", "n3", "n4"],
       id: "n2",
+      linked: ["n1", "n3", "n4"],
+      groups: ["L1", "L2"],
       x: 150,
       y: 100,
       r: 10,
       opacity: 0.5
     },
     {
-      linked: ["n1", "n2", "n4"],
       id: "n3",
+      linked: ["n2", "n4"],
+      groups: ["L2"],
       x: 200,
       y: 100,
       r: 10,
       opacity: 0.5
     },
     {
-      linked: ["n2", "n3"],
       id: "n4",
+      linked: ["n2", "n3"],
+      groups: ["L3"],
       x: 150,
       y: 150,
       r: 10,
       opacity: 0.5
     },
     {
-      linked: ["n1"],
       id: "n5",
+      linked: ["n1"],
+      groups: [],
       x: 100,
       y: 200,
       r: 10,
       opacity: 0.5
     }
   ]);
+
+  const leftButtons = nodes
+    .map(n => n.groups.map(g => g))
+    .flat()
+    .sort()
+    .reduce((unique, item) => {
+      return unique.includes(item) ? unique : [...unique, item];
+    }, []);
+  console.log(leftButtons);
 
   function increaseOpacity(e, key) {
     var array = connected[key].linked;
@@ -191,8 +205,29 @@ export default function Test() {
         <Grid container justify="center" spacing={2}>
           <Grid item>
             <Paper className={classes.paper}>
+              {leftButtons.map(b => {
+                return (
+                  <Button
+                    key={b}
+                    style={{ opacity: 0.5 }}
+                    // onMouseEnter={e => increaseOpacity(e, '2b')}
+                    // onMouseLeave={e => decreaseOpacity(e)}
+                  >
+                    {b}
+                  </Button>
+                );
+              })}
+            </Paper>
+          </Grid>
+        </Grid>
+      </Grid>
+
+      <Grid item xs={12}>
+        <Grid container justify="center" spacing={2}>
+          <Grid item>
+            <Paper className={classes.paper}>
               {/* <Stage width={window.innerWidth} height={window.innerHeight}> */}
-              <Stage width={500} height={500}>
+              <Stage width={250} height={250}>
                 <Layer>
                   {nodes.map(n => {
                     return (
@@ -234,7 +269,7 @@ export default function Test() {
           <Grid item>
             <Paper className={classes.paper}>
               {/* <Stage width={window.innerWidth} height={window.innerHeight}> */}
-              <Stage width={500} height={500}>
+              <Stage width={250} height={250}>
                 <Layer>
                   {nodes.map(n => {
                     return (
@@ -250,6 +285,51 @@ export default function Test() {
                       />
                     );
                   })}
+                  <Line
+                    x={100}
+                    y={100}
+                    points={[0, 0, 50, 0]}
+                    tension={0.5}
+                    closed
+                    stroke="black"
+                    opacity={0.5}
+                  />
+                  <Line
+                    x={150}
+                    y={100}
+                    points={[0, 0, 50, 0]}
+                    tension={0.5}
+                    closed
+                    stroke="black"
+                    opacity={0.5}
+                  />
+                  <Line
+                    x={100}
+                    y={100}
+                    points={[0, 0, 0, 100]}
+                    tension={0.5}
+                    closed
+                    stroke="black"
+                    opacity={0.5}
+                  />
+                  <Line
+                    x={150}
+                    y={100}
+                    points={[0, 0, 0, 50]}
+                    tension={0.5}
+                    closed
+                    stroke="black"
+                    opacity={0.5}
+                  />
+                  <Line
+                    x={200}
+                    y={100}
+                    points={[0, 0, -50, 50]}
+                    tension={0.5}
+                    closed
+                    stroke="black"
+                    opacity={0.5}
+                  />
                 </Layer>
               </Stage>
             </Paper>

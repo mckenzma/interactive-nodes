@@ -1,8 +1,8 @@
-import React from "react";
-import "./styles.css";
+import React from 'react';
+import './styles.css';
 // import * as d3 from "d3";
 
-import Test from "./Test";
+import Test from './Test';
 
 export default function App() {
   // d3.selectAll("h2").style("color", "blue");
