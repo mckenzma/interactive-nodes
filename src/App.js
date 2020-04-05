@@ -4,6 +4,7 @@ import "./styles.css";
 
 import Buttons from "./Buttons";
 import SimpleNodes from "./SimpleNodes";
+import ReactGraphVis from "./react-graph-vis";
 
 export default function App() {
   // d3.selectAll("h2").style("color", "blue");
@@ -13,6 +14,7 @@ export default function App() {
       {/* <h2>Start editing to see some magic happen!</h2> */}
       <Buttons />
       <SimpleNodes />
+      <ReactGraphVis />
     </div>
   );
 }
