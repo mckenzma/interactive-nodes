@@ -327,13 +327,13 @@ export default function ReactGraphVis() {
 
     for (var i = 0; i < rels.length; i++) {
       for (var j = 0; j < nodes.length; j++) {
-        if (rels[i].from === nodes[j].id) {
-          var start = nodes[i];
+        if (rels[i].from === nodes[j].id && rels[i].to === key) {
+          var start = nodes[j];
         }
       }
       for (var k = 0; k < nodes.length; k++) {
         if (rels[i].to === nodes[k].id) {
-          var end = nodes[i];
+          var end = nodes[k];
         }
       }
       console.log("start", start, "end", end);
