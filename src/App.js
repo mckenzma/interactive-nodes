@@ -10,8 +10,8 @@ export default function App() {
   // d3.selectAll("h2").style("color", "blue");
   return (
     <div className="App">
-      <Buttons />
-      <SimpleNodes />
+      {/* <Buttons /> */}
+      {/* <SimpleNodes /> */}
       <ReactGraphVis />
     </div>
   );

@@ -4,8 +4,14 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 // import * as d3 from "d3";
-import Konva from "konva";
-import { Stage, Layer, Rect, Text, Circle, Line, Node } from "react-konva";
+//import Konva from "konva";
+import {
+  Stage,
+  Layer,
+  /*Rect, */ Text,
+  Circle,
+  Line /*, Node*/
+} from "react-konva";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -102,7 +108,7 @@ export default function SimpleNodes() {
     .reduce((unique, item) => {
       return unique.includes(item) ? unique : [...unique, item];
     }, []);
-  console.log(leftButtons);
+  // console.log(leftButtons);
 
   // function increaseOpacity(e, key) {
   //   var array = connected[key].linked;

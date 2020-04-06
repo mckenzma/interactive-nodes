@@ -99,7 +99,7 @@ export default function Buttons() {
     .reduce((unique, item) => {
       return unique.includes(item) ? unique : [...unique, item];
     }, []);
-  console.log(leftButtons);
+  // console.log(leftButtons);
 
   function increaseOpacity(e, key) {
     var array = connected[key].linked;
