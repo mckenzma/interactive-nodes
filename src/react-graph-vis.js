@@ -282,7 +282,7 @@ export default function ReactGraphVis() {
     // },
     hoverNode: function(event) {
       var { nodes, edges /*, connectedNodes*/ } = event;
-      console.log(event, event.node);
+      // console.log(event, event.node);
       highlightConnectedNodes(event, event.node);
       // console.log(graph.getConnectedNodes(event.node));
       generatePseudoCypher(event.node);
@@ -290,7 +290,7 @@ export default function ReactGraphVis() {
   };
 
   function highlightConnectedNodes(e, key) {
-    console.log("Node id hovered: ", key);
+    // console.log("Node id hovered: ", key);
     var node = graph.nodes.find(n => n.id === key);
     console.log("node", node);
     var array = [key];
@@ -302,7 +302,7 @@ export default function ReactGraphVis() {
 
     for (var i = 0; i < updated.length; i++) {
       for (var j = 0; j < array.length; j++) {
-        console.log(updated[i].id, array[j]);
+        // console.log(updated[i].id, array[j]);
         if (updated[i].id !== array[j]) {
           console.log(updated[i]);
           updated[i].color = {
@@ -318,16 +318,16 @@ export default function ReactGraphVis() {
   // console.log("nodes", nodes);
 
   function generatePseudoCypher(key) {
-    console.log("Create cypher");
+    // console.log("Create cypher");
     var rels = edges.filter(r => r.from === key || r.to === key);
-    console.log("rels", rels, rels.length);
+    // console.log("rels", rels, rels.length);
 
     var updated = [];
     // var start, end;
 
     for (var i = 0; i < rels.length; i++) {
       for (var j = 0; j < nodes.length; j++) {
-        if (rels[i].from === nodes[j].id && rels[i].to === key) {
+        if (rels[i].from === nodes[j].id) {
           var start = nodes[j];
         }
       }
@@ -336,13 +336,13 @@ export default function ReactGraphVis() {
           var end = nodes[k];
         }
       }
-      console.log("start", start, "end", end);
+      // console.log("start", start, "end", end);
       updated.push(
         "(:" + start.label + ")-[:" + rels[i].label + "]->(:" + end.label + ")"
       );
     }
 
-    console.log("updated", updated);
+    // console.log("updated", updated);
 
     // setPseudoCypher(["blah", "bleh"]);
     setPseudoCypher([...updated]);
@@ -387,8 +387,8 @@ export default function ReactGraphVis() {
       <Grid item xs={12}>
         <Paper className={classes.paper}>
           <p>Generate pseudo-cypher here</p>
-          {pseudoCypher.map(cypher => {
-            return <p>{cypher}</p>;
+          {pseudoCypher.map((cypher, index) => {
+            return <p key={index}>{cypher}</p>;
           })}
         </Paper>
       </Grid>
