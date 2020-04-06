@@ -1,13 +1,33 @@
 import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
 import ReactDOM from "react-dom";
 import Graph from "react-graph-vis";
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
+import Button from "@material-ui/core/Button";
 
 import "./styles.css";
 // need to import the vis network css in order to show tooltip
-// not sure where to find this...
 import "./network.css";
 
+const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1
+  },
+  paper: {
+    // height: 140,
+    height: "100%",
+    // width: 100
+    width: "100%"
+  },
+  control: {
+    padding: theme.spacing(2)
+  }
+}));
+
 export default function ReactGraphVis() {
+  const classes = useStyles();
+
   const graph = {
     nodes: [
       { id: "1", label: "Node 1", title: "node 1 tootip text", x: 0, y: 0 },
@@ -53,13 +73,19 @@ export default function ReactGraphVis() {
     }
   };
   return (
-    <Graph
-      graph={graph}
-      options={options}
-      events={events}
-      getNetwork={network => {
-        //  if you want access to vis.js network api you can set the state in a parent component using this property
-      }}
-    />
+    <Grid container className={classes.root} spacing={2}>
+      <Grid item xs={12}>
+        <Paper className={classes.paper}>
+          <Graph
+            graph={graph}
+            options={options}
+            events={events}
+            getNetwork={network => {
+              //  if you want access to vis.js network api you can set the state in a parent component using this property
+            }}
+          />
+        </Paper>
+      </Grid>
+    </Grid>
   );
 }
