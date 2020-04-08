@@ -151,80 +151,8 @@ export default function ReactGraphVis() {
 
   const [graph, setGraph] = useState({
     nodes: nodes,
-    // nodes: [
-    //   {
-    //     id: "1",
-    //     cid: ["G1"],
-    //     label: "Node 1",
-    //     title: "node 1 tootip text",
-    //     x: 0,
-    //     y: 0
-    //     // color: {
-    //     //   border: "#000000",
-    //     //   background: "#ccccff"
-    //     //   // hover: {
-    //     //   //   border: "#000000",
-    //     //   //   background: "#5151fc"
-    //     //   // },
-    //     //   // highlight: {
-    //     //   //   border: "#000000",
-    //     //   //   background: "#5151fc"
-    //     //   // }
-    //     // }
-    //   },
-    //   {
-    //     id: "2",
-    //     cid: ["G1"],
-    //     label: "Node 2",
-    //     title: "node 2 tootip text",
-    //     x: 0,
-    //     y: 100
-    //   },
-    //   {
-    //     id: "3",
-    //     cid: ["G2"],
-    //     label: "Node 3",
-    //     title: "node 3 tootip text",
-    //     x: 0,
-    //     y: -100
-    //   },
-    //   {
-    //     id: "4",
-    //     cid: ["G2"],
-    //     label: "Node 4",
-    //     title: "node 4 tootip text",
-    //     x: -100,
-    //     y: 200
-    //   },
-    //   {
-    //     id: "5",
-    //     cid: ["G3"],
-    //     label: "Node 5",
-    //     title: "node 5 tootip text",
-    //     x: 100,
-    //     y: 200
-    //   }
-    // ],
     edges: edges
-    // edges: [
-    //   { from: "1", to: "2", label: "Rel 1" },
-    //   { from: "1", to: "3", label: "Rel 2" },
-    //   { from: "2", to: "4", label: "Rel 3" },
-    //   { from: "2", to: "5", label: "Rel 4" },
-    //   { from: "5", to: "5", label: "Rel 5" },
-    //   { from: "1", to: "4", label: "Rel 6" },
-    //   { from: "5", to: "3", label: "Rel 7" }
-    // ]
   });
-
-  // console.log("graph", graph);
-
-  // trying to get connected nodes to highglight when hover
-  // var connectedNodes = graph.edges;
-  // console.log(graph.edges.map(e => e.from + "-[:" + e.label + "]->" + e.to));
-  // console.log(connectedNodes);
-  // graph["connectedNodes"] = connectedNodes;
-  // console.log(graph);
 
   const buttons = Object.values(graph)[0] // [0] = nodes
     .map(n => n.cid.map(g => g))
@@ -249,20 +177,20 @@ export default function ReactGraphVis() {
     },
     height: "500px",
     nodes: {
-      color: {
-        border: "#000000",
-        background: "#ffffff",
-        hover: {
-          border: "#000000",
-          // background: "#5151fc"
-          background: "#ffffff"
-        },
-        highlight: {
-          border: "#000000",
-          // background: "#5151fc"
-          background: "#ffffff"
-        }
-      },
+      // color: {
+      //   border: "#000000",
+      //   background: "#ffffff",
+      //   hover: {
+      //     border: "#000000",
+      //     // background: "#5151fc"
+      //     background: "#ffffff"
+      //   },
+      //   highlight: {
+      //     border: "#000000",
+      //     // background: "#5151fc"
+      //     background: "#ffffff"
+      //   }
+      // },
       fixed: {
         x: true,
         y: true
@@ -285,14 +213,17 @@ export default function ReactGraphVis() {
       // console.log(event, event.node);
       highlightConnectedNodes(event, event.node);
       // console.log(graph.getConnectedNodes(event.node));
-      generatePseudoCypher(event.node);
+      generatePseudoCypher(event.node, true);
+    },
+    blurNode: function(event) {
+      generatePseudoCypher("", false);
     }
   };
 
   function highlightConnectedNodes(e, key) {
     // console.log("Node id hovered: ", key);
     var node = graph.nodes.find(n => n.id === key);
-    console.log("node", node);
+    // console.log("node", node);
     var array = [key];
 
     //TODO add other nodes from edges to 'array'
@@ -304,48 +235,57 @@ export default function ReactGraphVis() {
       for (var j = 0; j < array.length; j++) {
         // console.log(updated[i].id, array[j]);
         if (updated[i].id !== array[j]) {
-          console.log(updated[i]);
+          // console.log(updated[i]);
           updated[i].color = {
-            background: "#000000"
+            background: "#5151fc"
           };
         }
       }
     }
 
     setNodes([...updated]);
+    console.log("nodes updates");
+    // setGraph({..nodes:nodes});
   }
 
-  // console.log("nodes", nodes);
+  console.log("nodes", nodes);
 
-  function generatePseudoCypher(key) {
+  function generatePseudoCypher(key, generate) {
     // console.log("Create cypher");
-    var rels = edges.filter(r => r.from === key || r.to === key);
-    // console.log("rels", rels, rels.length);
+    if (generate === true) {
+      var rels = edges.filter(r => r.from === key || r.to === key);
+      // console.log("rels", rels, rels.length);
 
-    var updated = [];
-    // var start, end;
+      var updated = [];
+      // var start, end;
 
-    for (var i = 0; i < rels.length; i++) {
-      for (var j = 0; j < nodes.length; j++) {
-        if (rels[i].from === nodes[j].id) {
-          var start = nodes[j];
+      for (var i = 0; i < rels.length; i++) {
+        for (var j = 0; j < nodes.length; j++) {
+          if (rels[i].from === nodes[j].id) {
+            var start = nodes[j];
+          }
         }
-      }
-      for (var k = 0; k < nodes.length; k++) {
-        if (rels[i].to === nodes[k].id) {
-          var end = nodes[k];
+        for (var k = 0; k < nodes.length; k++) {
+          if (rels[i].to === nodes[k].id) {
+            var end = nodes[k];
+          }
         }
+        // console.log("start", start, "end", end);
+        updated.push(
+          "(:" +
+            start.label +
+            ")-[:" +
+            rels[i].label +
+            "]->(:" +
+            end.label +
+            ")"
+        );
       }
-      // console.log("start", start, "end", end);
-      updated.push(
-        "(:" + start.label + ")-[:" + rels[i].label + "]->(:" + end.label + ")"
-      );
+
+      setPseudoCypher([...updated]);
+    } else {
+      setPseudoCypher([]);
     }
-
-    // console.log("updated", updated);
-
-    // setPseudoCypher(["blah", "bleh"]);
-    setPseudoCypher([...updated]);
   }
 
   return (
