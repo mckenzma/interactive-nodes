@@ -12,6 +12,7 @@ import {
   Circle,
   Line /*, Node*/
 } from 'react-konva';
+// import { Solarize } from 'konva/types/filters/Solarize';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -109,7 +110,7 @@ export default function SimpleNodes() {
   const [nodes2, setNodes2] = useState([
     {
       id: 'n1_2',
-      linked: [],
+      linked: ['n2_2'],
       linked2: ['n1'],
       groups: ['L1'],
       x: 100,
@@ -119,7 +120,7 @@ export default function SimpleNodes() {
     },
     {
       id: 'n2_2',
-      linked: [],
+      linked: ['n1_2'],
       linked2: ['n1'],
       groups: ['L1', 'L2'],
       x: 150,
@@ -136,22 +137,8 @@ export default function SimpleNodes() {
     .reduce((unique, item) => {
       return unique.includes(item) ? unique : [...unique, item];
     }, []);
-  // console.log(leftButtons);
-
-  // function increaseOpacity(e, key) {
-  //   var array = connected[key].linked;
-
-  //   var updates = array.reduce((thing, item) => {
-  //     thing[item] = 1.0;
-  //     return thing;
-  //   }, {});
-
-  //   updates[key] = 1.0;
-
-  //   setOpacity({ ...opacity, ...updates });
-  // }
-
-  function increaseOpacity2(e, key, nodesArray, arrayIndicator) {
+  
+  function increaseOpacity(e, key, nodesArray, arrayIndicator) {
     var node = nodesArray.find(n => n.id === key);
     if (node !== undefined) {
       var array = node.linked;
@@ -176,6 +163,14 @@ export default function SimpleNodes() {
     }
   }
 
+  function increaseOpacityOther(e,keys,nodesArray,arrayIndicator){
+    // var nodes = [];
+    for (var i=0;i<keys.length;i++){
+      increaseOpacity(e,keys[i],nodesArray,arrayIndicator)
+    }
+    // return;
+  }
+
   function decreaseOpacity(e, nodesArray, arrayIndicator) {
     setOpacity({
       '1a': 0.5,
@@ -198,7 +193,7 @@ export default function SimpleNodes() {
 
   return (
     <Grid container className={classes.root} spacing={2}>
-      <Grid item xs={12}>
+      {/*<Grid item xs={12}>
         <Grid container justify="center" spacing={2}>
           <Grid item>
             <Paper className={classes.paper}>
@@ -217,7 +212,7 @@ export default function SimpleNodes() {
             </Paper>
           </Grid>
         </Grid>
-      </Grid>
+            </Grid>*/}
 
       <Grid item xs={12}>
         <Grid container justify="center" spacing={2}>
@@ -235,10 +230,16 @@ export default function SimpleNodes() {
                         key={n.id}
                         opacity={n.opacity}
                         fill="green"
-                        onMouseEnter={e =>
-                          increaseOpacity2(e, n.id, nodes, '1')
+                        onMouseEnter={e => {
+                          increaseOpacity(e, n.id, nodes, '1')
+                          increaseOpacityOther(e, n.linked2, nodes2, '2')
                         }
-                        onMouseLeave={e => decreaseOpacity(e, nodes, '1')}
+                        }
+                        onMouseLeave={e => {
+                          decreaseOpacity(e, nodes, '1')
+                          decreaseOpacity(e, nodes2, '2')
+                        }
+                        }
                       />
                     );
                   })}
@@ -257,7 +258,7 @@ export default function SimpleNodes() {
                         opacity={n.opacity}
                         // fill="green"
                         onMouseEnter={e =>
-                          increaseOpacity2(e, n.id, nodes, '1')
+                          increaseOpacity(e, n.id, nodes, '1')
                         }
                         onMouseLeave={e => decreaseOpacity(e)}
                       />
@@ -280,10 +281,15 @@ export default function SimpleNodes() {
                         key={n.id}
                         opacity={n.opacity}
                         fill="green"
-                        onMouseEnter={e =>
-                          increaseOpacity2(e, n.id, nodes2, '2')
+                        onMouseEnter={e => {
+                          increaseOpacity(e, n.id, nodes2, '2')
+                          increaseOpacityOther(e, n.linked2, nodes, '1')
                         }
-                        onMouseLeave={e => decreaseOpacity(e, nodes2, '2')}
+                        }
+                        onMouseLeave={e => {
+                          decreaseOpacity(e, nodes2, '2')
+                          decreaseOpacity(e, nodes, '1')
+                        }}
                       />
                     );
                   })}
