@@ -121,7 +121,7 @@ export default function SimpleNodes() {
     {
       id: 'n2_2',
       linked: ['n1_2'],
-      linked2: ['n1'],
+      linked2: ['n1','n5'],
       groups: ['L1', 'L2'],
       x: 150,
       y: 100,
@@ -164,11 +164,33 @@ export default function SimpleNodes() {
   }
 
   function increaseOpacityOther(e,keys,nodesArray,arrayIndicator){
-    // var nodes = [];
-    for (var i=0;i<keys.length;i++){
-      increaseOpacity(e,keys[i],nodesArray,arrayIndicator)
+    // this currently seems expensive iterating over "setnodes/2" too many times. could be/ should be refactored
+    var nodes = [];
+    for (var h=0;h<keys.length;h++){
+      // increaseOpacity(e,keys[i],nodesArray,arrayIndicator)
+      var node = nodesArray.find(n => n.id === keys[h]);
+      if (node !== undefined) {
+        var array = node.linked2;
+        array.push(keys[h]);
+
+        var updated = nodesArray;
+
+        for (var i = 0; i < updated.length; i++) {
+          for (var j = 0; j < array.length; j++) {
+            if (updated[i].id === array[j]) {
+              updated[i].opacity = 1.0;
+            }
+          }
+        }
+  
+        if (arrayIndicator === '1') {
+          setNodes([...updated]);
+        }
+        if (arrayIndicator === '2') {
+          setNodes2([...updated]);
+        }     
+      }
     }
-    // return;
   }
 
   function decreaseOpacity(e, nodesArray, arrayIndicator) {
