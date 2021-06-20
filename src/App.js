@@ -24,16 +24,8 @@ export default function App() {
 
   return (
     <div className="App">
-      {/* <Buttons /> */}
       <SimpleNodes />
-      <Grid container spacing={3}>
-        <Grid item xs={6}>
-          <ReactGraphVis />
-        </Grid>
-        <Grid item xs={6}>
-          <ReactGraphVis />
-        </Grid>
-      </Grid>
+      <ReactGraphVis />
     </div>
   );
 }
