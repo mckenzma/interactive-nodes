@@ -32,28 +32,6 @@ const useStyles = makeStyles(theme => ({
 export default function SimpleNodes() {
   const classes = useStyles();
 
-  const [opacity, setOpacity] = useState({
-    '1a': 0.5,
-    '1b': 0.5,
-    '2a': 0.5,
-    '2b': 0.5
-  });
-
-  const connected = {
-    '1a': {
-      linked: ['1b', '2a']
-    },
-    '1b': {
-      linked: ['1a', '2b']
-    },
-    '2a': {
-      linked: ['1a', '2b']
-    },
-    '2b': {
-      linked: ['1b', '2a']
-    }
-  };
-
   const [nodes, setNodes] = useState([
     {
       id: 'n1',
@@ -194,12 +172,12 @@ export default function SimpleNodes() {
   }
 
   function decreaseOpacity(e, nodesArray, arrayIndicator) {
-    setOpacity({
-      '1a': 0.5,
-      '1b': 0.5,
-      '2a': 0.5,
-      '2b': 0.5
-    });
+    // setOpacity({
+    //   '1a': 0.5,
+    //   '1b': 0.5,
+    //   '2a': 0.5,
+    //   '2b': 0.5
+    // });
 
     var updated = nodesArray;
     for (var i = 0; i < updated.length; i++) {
